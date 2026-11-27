@@ -1,0 +1,240 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public social profile for a real registered Momentia user (no PII such as email or phone).",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Firebase Auth UID of the user." },
+        "username": { "type": "string", "description": "Unique-style handle chosen by the user (3-30 chars)." },
+        "displayName": { "type": "string", "description": "Display name chosen by the user (1-50 chars)." },
+        "bio": { "type": "string", "description": "Optional short profile biography (0-160 chars)." },
+        "avatarBase64": { "type": "string", "description": "Optional compressed JPEG avatar encoded in Base64." },
+        "discoverable": { "type": "boolean", "description": "Whether the profile is discoverable in search." },
+        "followersCount": { "type": "integer", "description": "Total follower count." },
+        "followingCount": { "type": "integer", "description": "Total following count." },
+        "postsCount": { "type": "integer", "description": "Total posts and reels count." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp of creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp of last update." }
+      },
+      "required": ["userId", "username", "displayName", "discoverable", "followersCount", "followingCount", "postsCount", "createdAt", "updatedAt"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Real user-published photo or video post or Reel.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string", "description": "UID of the post creator." },
+        "authorUsername": { "type": "string", "description": "Creator handle snapshot." },
+        "authorDisplayName": { "type": "string", "description": "Creator display name snapshot." },
+        "authorAvatarBase64": { "type": "string", "description": "Optional creator avatar Base64." },
+        "caption": { "type": "string", "description": "Post caption text (0-500 chars)." },
+        "mediaType": { "type": "string", "enum": ["IMAGE", "VIDEO"], "description": "Media type." },
+        "postType": { "type": "string", "enum": ["POST", "REEL"], "description": "Feed post or vertical Reel." },
+        "audience": { "type": "string", "enum": ["PUBLIC", "CLOSE_FRIENDS"], "description": "Audience scope." },
+        "visibleToUids": { "type": "array", "description": "Bounded list of UIDs allowed to view CLOSE_FRIENDS posts (includes authorId)." },
+        "mediaBase64": { "type": "string", "description": "Optional compressed JPEG Base64 for IMAGE posts." },
+        "thumbnailBase64": { "type": "string", "description": "Optional compressed JPEG thumbnail Base64 for VIDEO posts." },
+        "chunkCount": { "type": "integer", "description": "Number of video chunks in chunks subcollection (0 for IMAGE)." },
+        "likesCount": { "type": "integer", "description": "Total likes count." },
+        "commentsCount": { "type": "integer", "description": "Total comments count." },
+        "createdAt": { "type": "string", "format": "date-time", "description": "Server timestamp of creation." },
+        "updatedAt": { "type": "string", "format": "date-time", "description": "Server timestamp of last update." }
+      },
+      "required": ["authorId", "authorUsername", "authorDisplayName", "caption", "mediaType", "postType", "audience", "visibleToUids", "chunkCount", "likesCount", "commentsCount", "createdAt", "updatedAt"]
+    },
+    "MediaChunk": {
+      "title": "MediaChunk",
+      "description": "Chunked Base64 video payload slice for a real user-uploaded video post or Reel.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "audience": { "type": "string", "enum": ["PUBLIC", "CLOSE_FRIENDS"] },
+        "visibleToUids": { "type": "array" },
+        "chunkIndex": { "type": "integer" },
+        "dataBase64": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "audience", "visibleToUids", "chunkIndex", "dataBase64", "createdAt"]
+    },
+    "PostLike": {
+      "title": "PostLike",
+      "description": "Like record on a post keyed by liker UID.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "username", "createdAt"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "User comment on a post or Reel.",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string" },
+        "authorId": { "type": "string" },
+        "authorUsername": { "type": "string" },
+        "authorAvatarBase64": { "type": "string" },
+        "text": { "type": "string" },
+        "audience": { "type": "string", "enum": ["PUBLIC", "CLOSE_FRIENDS"] },
+        "visibleToUids": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "authorId", "authorUsername", "text", "audience", "visibleToUids", "createdAt"]
+    },
+    "Story": {
+      "title": "Story",
+      "description": "24-hour Story shared by a real user.",
+      "type": "object",
+      "properties": {
+        "authorId": { "type": "string" },
+        "authorUsername": { "type": "string" },
+        "authorDisplayName": { "type": "string" },
+        "authorAvatarBase64": { "type": "string" },
+        "mediaBase64": { "type": "string" },
+        "caption": { "type": "string" },
+        "audience": { "type": "string", "enum": ["PUBLIC", "CLOSE_FRIENDS"] },
+        "visibleToUids": { "type": "array" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorUsername", "authorDisplayName", "mediaBase64", "audience", "visibleToUids", "createdAt"]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "Short 60-character status note shown above user avatars in Messages.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "avatarBase64": { "type": "string" },
+        "text": { "type": "string" },
+        "discoverable": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "username", "text", "discoverable", "createdAt", "updatedAt"]
+    },
+    "RelationRef": {
+      "title": "RelationRef",
+      "description": "Reference entry for following, follower, close friend, saved post, or liked post.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "targetId": { "type": "string" },
+        "username": { "type": "string" },
+        "displayName": { "type": "string" },
+        "avatarBase64": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "targetId", "createdAt"]
+    },
+    "ActivityItem": {
+      "title": "ActivityItem",
+      "description": "Real interaction notification (like, comment, follow) delivered to a user.",
+      "type": "object",
+      "properties": {
+        "targetUserId": { "type": "string" },
+        "actorId": { "type": "string" },
+        "actorUsername": { "type": "string" },
+        "actorAvatarBase64": { "type": "string" },
+        "actionType": { "type": "string", "enum": ["LIKE", "COMMENT", "FOLLOW"] },
+        "postId": { "type": "string" },
+        "previewText": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["targetUserId", "actorId", "actorUsername", "actionType", "createdAt"]
+    },
+    "ChatThread": {
+      "title": "ChatThread",
+      "description": "Direct message thread between two real users.",
+      "type": "object",
+      "properties": {
+        "participantIds": { "type": "array" },
+        "lastMessageText": { "type": "string" },
+        "lastSenderId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participantIds", "lastMessageText", "lastSenderId", "createdAt", "updatedAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Direct message inside a chat thread.",
+      "type": "object",
+      "properties": {
+        "chatId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderUsername": { "type": "string" },
+        "participantIds": { "type": "array" },
+        "text": { "type": "string" },
+        "sharedPostId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["chatId", "senderId", "senderUsername", "participantIds", "text", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Public user profiles."
+    },
+    "/users/{userId}/following/{targetUserId}": {
+      "schema": { "$ref": "#/entities/RelationRef" },
+      "description": "Users followed by userId."
+    },
+    "/users/{userId}/followers/{followerUserId}": {
+      "schema": { "$ref": "#/entities/RelationRef" },
+      "description": "Followers of userId."
+    },
+    "/users/{userId}/closeFriends/{friendUserId}": {
+      "schema": { "$ref": "#/entities/RelationRef" },
+      "description": "Close friends list managed by userId."
+    },
+    "/users/{userId}/saved/{postId}": {
+      "schema": { "$ref": "#/entities/RelationRef" },
+      "description": "Posts saved/bookmarked by userId."
+    },
+    "/users/{userId}/likedPosts/{postId}": {
+      "schema": { "$ref": "#/entities/RelationRef" },
+      "description": "Posts liked by userId for instant UI state."
+    },
+    "/users/{userId}/activity/{activityId}": {
+      "schema": { "$ref": "#/entities/ActivityItem" },
+      "description": "Real interaction notifications for userId."
+    },
+    "/posts/{postId}": {
+      "schema": { "$ref": "#/entities/Post" },
+      "description": "Real user-published posts and Reels."
+    },
+    "/posts/{postId}/chunks/{chunkId}": {
+      "schema": { "$ref": "#/entities/MediaChunk" },
+      "description": "Chunked video data for VIDEO posts and Reels."
+    },
+    "/posts/{postId}/likes/{likeUserId}": {
+      "schema": { "$ref": "#/entities/PostLike" },
+      "description": "Likes on a post."
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": { "$ref": "#/entities/Comment" },
+      "description": "Comments on a post."
+    },
+    "/stories/{storyId}": {
+      "schema": { "$ref": "#/entities/Story" },
+      "description": "24-hour user stories."
+    },
+    "/notes/{userId}": {
+      "schema": { "$ref": "#/entities/Note" },
+      "description": "Short user thought notes in Messages."
+    },
+    "/chats/{chatId}": {
+      "schema": { "$ref": "#/entities/ChatThread" },
+      "description": "Direct message conversation headers."
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Direct messages inside a conversation."
+    }
+  }
+}

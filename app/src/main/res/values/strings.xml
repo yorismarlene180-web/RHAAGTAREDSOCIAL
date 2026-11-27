@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Momentia</string>
+    <string name="sign_in_with_google">Continuar con Google</string>
+    <string name="welcome_subtitle">Comparte fotos, historias, Reels y mensajes con personas reales. Sin bots ni contenido falso.</string>
+    <string name="complete_profile_title">Elige tu nombre</string>
+    <string name="complete_profile_subtitle">Regístrate solo con tu nombre para empezar a publicar y conectar en línea.</string>
+    <string name="tab_home">Inicio</string>
+    <string name="tab_search">Buscar</string>
+    <string name="tab_create">Publicar</string>
+    <string name="tab_reels">Reels</string>
+    <string name="tab_profile">Perfil</string>
+    <string name="your_story">Tu historia</string>
+    <string name="your_note">Tu nota</string>
+    <string name="close_friends">Mejores amigos</string>
+    <string name="empty_feed_title">Aún no hay publicaciones reales</string>
+    <string name="empty_feed_body">No usamos bots ni publicaciones falsas. Comparte la primera foto o video de la comunidad.</string>
+    <string name="empty_reels_title">Aún no hay Reels reales</string>
+    <string name="empty_reels_body">Cuando tú u otras personas publiquen videos verticales, aparecerán aquí en tiempo real.</string>
+</resources>

@@ -1,0 +1,6 @@
+{
+  "name": "Momentia",
+  "description": "Red social en línea para compartir fotos, videos, Reels, historias y mensajes directos entre personas reales.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
